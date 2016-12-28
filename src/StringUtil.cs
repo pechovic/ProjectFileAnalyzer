@@ -26,5 +26,10 @@ namespace ProjectFileAnalyzer
 
             return null;
         } 
+
+        public static string PathToUnix(this string data)
+        {
+            return data.Replace("\\", "/");
+        }
     }
 }

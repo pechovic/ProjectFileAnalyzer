@@ -26,5 +26,15 @@ namespace ProjectFileAnalyzer
         {
             Console.WriteLine("[Warn] - " + format, args);
         }
+
+        public static void WriteError(string data)
+        {
+            Console.WriteLine("[Error] - {0}", data);
+        }
+
+        public static void WriteError(string format, params object[] args)
+        {
+            Console.WriteLine("[Error] - " + format, args);
+        }
     }
 }

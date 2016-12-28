@@ -33,5 +33,19 @@ namespace ProjectFileAnalyzerTest
             Assert.NotNull(actual);
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void TakeOut_TextWithXmlTagsTest()
+        {
+            string data = "<ProjectGuid>Hello</ProjectGuid>";
+            string open = "\\<ProjectGuid\\>";
+            string close = "\\</ProjectGuid\\>";
+            string expected = "Hello";
+
+            string actual = data.TakeOut(open, close);
+
+            Assert.NotNull(actual);
+            Assert.Equal(expected, actual);
+        }
     }
 }

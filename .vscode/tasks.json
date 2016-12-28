@@ -19,7 +19,7 @@
             {
                 "taskName": "Run",
                 "args": [
-                    "dotnet ./bin/Debug/netcoreapp1.0/ProjectFileAnalyzer.dll"
+                    "dotnet ./src/bin/Debug/netcoreapp1.0/ProjectFileAnalyzer.dll /Users/petr/git/NetDb/NetDb.Commands.Tests/NetDb.Commands.Tests.csproj"
                 ]
             },
             {

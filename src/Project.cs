@@ -30,7 +30,7 @@ namespace ProjectFileAnalyzer
             {
                 if (content[i].Contains("ProjectGuid"))
                 {
-                    projectGuid = content[i].TakeOut("<ProjectGuid>", "</ProjectGuid>");
+                    projectGuid = content[i].TakeOut("\\<ProjectGuid\\>", "\\</ProjectGuid\\>");
                 }
             }
 
@@ -55,9 +55,9 @@ namespace ProjectFileAnalyzer
 
             foreach (var line in content)
             {
-                if (line.Contains("ProjectReference") && line != "</ProjectReference>")
+                if (line.Contains("ProjectReference") && line.Trim() != "</ProjectReference>")
                 {
-                    string nextProjectRelativePath = line.TakeOut("Include=\"=", "\"");
+                    string nextProjectRelativePath = line.TakeOut("Include=\"", "\"");
                     if (nextProjectRelativePath == null)
                     {
                         Log.WriteWarning("{0} - parsing ProjectReference info on the following line failed: {1} ", 
@@ -67,7 +67,9 @@ namespace ProjectFileAnalyzer
                     
                     // take a recursive call to explore found file
                     // compose a file path first -> relative to the currently parsed file
-                    string nextProjectFullPath = Path.Combine(Path.GetDirectoryName(filePath), nextProjectRelativePath);
+                    string nextProjectFullPath = Path.Combine(
+                        Path.GetDirectoryName(filePath), 
+                        nextProjectRelativePath.PathToUnix());
                     Project nextProject = CreateRecursivelyFromFile(nextProjectFullPath, container);
 
                     p.AdjacentVertices.Add(nextProject);
@@ -79,7 +81,7 @@ namespace ProjectFileAnalyzer
     }
 
     /// <summary>
-    /// Quick access to a Project based on guid.
+    /// Quick access to a Project based on a guid.
     /// </summary>
     public class UniqueProjects : Dictionary<string, Project>
     {
