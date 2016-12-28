@@ -1,5 +1,3 @@
-using System;
-
 namespace ProjectFileAnalyzer
 {
     /// <summary>
@@ -9,13 +7,14 @@ namespace ProjectFileAnalyzer
     {
         /// <summary>
         /// Take a string opened by 'open' and closed by 'close'.
+        /// It always takes the first occasion in the string.
         /// </summary>
         /// <param name="open"></param>
         /// <param name="close"></param>
-        /// <returns></returns>
+        /// <returns>Returns null if open or close is not present in the input data.</returns>
         public static string TakeOut(this string data, string open, string close)
         {
-
+            return null;
         } 
     }
 }

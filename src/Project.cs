@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Collections.Generic;
 
@@ -42,7 +41,7 @@ namespace ProjectFileAnalyzer
                 return null;
             }
 
-            if (container.ContainesKey(projectGuid))
+            if (container.ContainsKey(projectGuid))
             {
                 Log.WriteInfo("Skipping project {0} because it has been already explored.", projectName);
                 return null;
@@ -71,7 +70,7 @@ namespace ProjectFileAnalyzer
                     string nextProjectFullPath = Path.Combine(Path.GetDirectoryName(filePath), nextProjectRelativePath);
                     Project nextProject = CreateRecursivelyFromFile(nextProjectFullPath, container);
 
-                    p.Add(nextProject);
+                    p.AdjacentVertices.Add(nextProject);
                 }
             }
 

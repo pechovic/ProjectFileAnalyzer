@@ -9,22 +9,22 @@ namespace ProjectFileAnalyzer
     {
         public static void WriteInfo(string data)
         {
-            Console.WriteLine(data);
+            Console.WriteLine("[Info] - {0}",data);
         }
 
         public static void WriteInfo(string format, params object[] args)
         {
-            Console.WriteLine(format, args);
+            Console.WriteLine("[Info] - " + format, args);
         }
 
         public static void WriteWarning(string data)
         {
-            Console.WriteLine(data);
+            Console.WriteLine("[Warn] - {0}", data);
         }
 
         public static void WriteWarning(string format, params object[] args)
         {
-            Console.WriteLine(format, args);
+            Console.WriteLine("[Warn] - " + format, args);
         }
     }
 }

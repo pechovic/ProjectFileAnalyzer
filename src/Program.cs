@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace ConsoleApplication
+﻿
+namespace ProjectFileAnalyzer
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-
+            
         }
     }
 }
