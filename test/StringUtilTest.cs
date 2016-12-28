@@ -23,9 +23,9 @@ namespace ProjectFileAnalyzerTest
         [Fact]
         public void TakeOut_TextWithBracketsTest()
         {
-            string data = "will be bla bla this is some string that (will be used) as input";
-            string open = "(will ";
-            string close = " used)";
+            string data = "will be bla bla used this is some string that (will be used) as input";
+            string open = "\\(will ";
+            string close = " used\\)";
             string expected = "be";
 
             string actual = data.TakeOut(open, close);

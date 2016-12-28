@@ -25,7 +25,7 @@
             {
                 "taskName": "Clean",
                 "args": [
-                    "rm -rf ./bin/*"
+                    "./clean.sh"
                 ]
             },
             {

@@ -1,7 +1,9 @@
+using System.Text.RegularExpressions;
+
 namespace ProjectFileAnalyzer
 {
     /// <summary>
-    /// There is a reason behind why this is not regular expression.
+    /// Some common string tasks.
     /// </summary>
     public static class StringUtil
     {
@@ -14,6 +16,14 @@ namespace ProjectFileAnalyzer
         /// <returns>Returns null if open or close is not present in the input data.</returns>
         public static string TakeOut(this string data, string open, string close)
         {
+            string pattern = open + "(.*)" + close;
+            Match m = Regex.Match(data, pattern);
+            // 2 groups, one for the whole string, second for the middle string
+            if (m.Groups.Count == 2)
+            {
+                return m.Groups[1].Value;
+            }
+
             return null;
         } 
     }
