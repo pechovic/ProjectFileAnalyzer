@@ -3,12 +3,27 @@ using System.Collections.Generic;
 
 namespace ProjectFileAnalyzer
 {
-    public class Project : Vertex<string>
+    public class Project
     {
         public string FilePath { get; set; }
 
-        public Project(string value) : base(value)
+        /// <summary>
+        /// Unique identifier of the project.
+        /// Taken from Guid.
+        /// </summary>
+        /// <returns></returns>
+        public string Guid { get; set; }
+        public UniqueVertices References { get; set; } = new UniqueVertices();
+        public UniqueVertices ReferencedBy {get; set; } = new UniqueVertices();
+
+        /// <summary>
+        /// -1 will also serve as WasExplored information
+        /// </summary>
+        public int PathLength { get; set; } = -1;
+
+        public Project(string value)
         {
+            Guid = value;
         }
 
         public static Project CreateRecursivelyFromFile(string filePath, UniqueProjects container) 
@@ -72,12 +87,36 @@ namespace ProjectFileAnalyzer
                         nextProjectRelativePath.ToUnixPath());
                     Project nextProject = CreateRecursivelyFromFile(nextProjectFullPath, container);
 
-                    p.AdjacentVertices.Add(nextProject);
+                    if (nextProject != null)
+                    {
+                        p.References.Add(nextProject);
+                        nextProject.ReferencedBy.Add(p);
+                    }
                 }
             }
 
             return p;
         }
+
+        public override string ToString()
+        {
+            return Guid.ToString();
+        }
+
+    #region UniqueVertices
+
+        public class UniqueVertices : List<Project>
+        {
+            new public void Add(Project v)
+            {
+                if (!Contains(v))
+                {
+                    base.Add(v);
+                }
+            }
+        }
+    #endregion
+
     }
 
     /// <summary>
@@ -87,9 +126,9 @@ namespace ProjectFileAnalyzer
     {
         public void AddSafe(Project p)
         {
-            if (!ContainsKey(p.Value))
+            if (!ContainsKey(p.Guid))
             {
-                Add(p.Value, p);
+                Add(p.Guid, p);
             }    
         }
     }

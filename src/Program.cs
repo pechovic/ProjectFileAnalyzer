@@ -52,6 +52,9 @@ namespace ProjectFileAnalyzer
             {
                 throw new Exception("The file must end with csproj or sln.");
             }
+
+            // here use the container to eplore the graph
+
         }
 
         private Project HandleCsproj(string file, UniqueProjects container)
