@@ -69,7 +69,7 @@ namespace ProjectFileAnalyzer
                     // compose a file path first -> relative to the currently parsed file
                     string nextProjectFullPath = Path.Combine(
                         Path.GetDirectoryName(filePath), 
-                        nextProjectRelativePath.PathToUnix());
+                        nextProjectRelativePath.ToUnixPath());
                     Project nextProject = CreateRecursivelyFromFile(nextProjectFullPath, container);
 
                     p.AdjacentVertices.Add(nextProject);
