@@ -47,5 +47,16 @@ namespace ProjectFileAnalyzerTest
             Assert.NotNull(actual);
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void GetProjectPath_Test()
+        {
+            string dataLine = "Project(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"NetDb.Core\", \"NetDb.Core\\NetDb.Core.csproj\", \"{6D85E6C7-B860-4ED4-8C3B-C3306BAA18EC}\"";
+            string actual = dataLine.GetProjectPath();
+            string expected = "NetDb.Core\\NetDb.Core.csproj";
+
+            Assert.NotNull(actual);
+            Assert.Equal(expected, actual);
+        }
     }
 }

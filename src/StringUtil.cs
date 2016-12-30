@@ -25,9 +25,22 @@ namespace ProjectFileAnalyzer
             }
 
             return null;
-        } 
+        }
 
-        public static string PathToUnix(this string data)
+        /// <summary>
+        /// Gets the path of the project from line from sln file. 
+        /// </summary>
+        /// <param name="dataLine"></param>
+        /// <returns></returns>
+        public static string GetProjectPath(this string dataLine)
+        {
+            string[] data = dataLine.Split(',');
+            return data.Length > 1 ?
+                data[1].Trim().Replace("\"", "")
+                : null;
+        }
+
+        public static string ToUnixPath(this string data)
         {
             return data.Replace("\\", "/");
         }
