@@ -57,13 +57,13 @@ namespace ProjectFileAnalyzer
 
         }
 
-        private Project HandleCsproj(string file, UniqueProjects container)
+        public Project HandleCsproj(string file, UniqueProjects container)
         {
             // the newly parsed project will be in the container
             return Project.CreateRecursivelyFromFile(file, container);
         }
 
-        private void HandleSln(string file, UniqueProjects container)
+        public void HandleSln(string file, UniqueProjects container)
         {
             string[] lines = File.ReadAllLines(file);
             string fileRoot = Path.GetDirectoryName(file);

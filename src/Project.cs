@@ -5,7 +5,7 @@ namespace ProjectFileAnalyzer
 {
     public class Project
     {
-        public string FilePath { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Unique identifier of the project.
@@ -37,7 +37,7 @@ namespace ProjectFileAnalyzer
             }
 
             string projectName = Path.GetFileName(filePath);
-
+            
             var content = File.ReadAllLines(filePath);
             string projectGuid = "";            
             // read guid first and end in case this was already explored
@@ -59,11 +59,12 @@ namespace ProjectFileAnalyzer
             if (container.ContainsKey(projectGuid))
             {
                 Log.WriteInfo("Skipping project {0} because it has been already explored.", projectName);
-                return null;
+                return container[projectGuid];
             }
 
             // Project is new, not explored, so create a new instance
             Project p = new Project(projectGuid);
+            p.Name = projectName;
 
             // add it to the container now so that everyone knows it's being explored
             container.Add(projectGuid, p);
