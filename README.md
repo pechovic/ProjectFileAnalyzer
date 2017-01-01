@@ -10,7 +10,7 @@ The code is written in C# (DOT .NET Core) in Visual Studio Code Editor.
 
 Run build.sh to build the solution.
 
-## Hown to run it
+## How to run it
 
 Once you build the solution, you shoud have available _ProjectFileAnalyzer.dll_ file under _./src/bin/Debug/netcoreapp1.0/_ folder.
 You can run the program by the following command:
@@ -36,4 +36,8 @@ Please refer to this file [Program.cs](https://github.com/pechovic/ProjectFileAn
 ```
 Here you are provided with the _container_ variable which is a dictionary indexed by:
 * project guid in case of project reference
-* assembly name in case of regular reference 
+* assembly name in case of regular reference
+
+Every item in the _container_ dictionary is a type of _Project_ class that has 2 properties:
+* References - a dictionary of projects that are being referenced by this project
+* ReferencedBy - a dictionary of projects that reference this project
