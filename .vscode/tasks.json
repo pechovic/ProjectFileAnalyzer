@@ -19,13 +19,7 @@
             {
                 "taskName": "Run With Csproj",
                 "args": [
-                    "dotnet ./src/bin/Debug/netcoreapp1.0/ProjectFileAnalyzer.dll /Users/petr/git/NetDb/NetDb.Commands.Tests/NetDb.Commands.Tests.csproj"
-                ]
-            },
-            {
-                "taskName": "Run With Sln",
-                "args": [
-                    "dotnet ./src/bin/Debug/netcoreapp1.0/ProjectFileAnalyzer.dll /Users/petr/git/NetDb/NetDb.sln"
+                    "dotnet ./src/bin/Debug/netcoreapp1.0/ProjectFileAnalyzer.dll"
                 ]
             },
             {
