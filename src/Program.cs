@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.IO;
+using System.Linq;
 
 namespace ProjectFileAnalyzer
 {
@@ -59,31 +60,41 @@ namespace ProjectFileAnalyzer
             
         }
 
-        public Project HandleCsproj(string file, UniqueProjects container)
+        /// <summary>
+        /// Go and analyze csproj file.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="container"></param>
+        /// <param name="exploreAll"></param>
+        /// <returns></returns>
+        public Project HandleCsproj(string file, UniqueProjects container, bool exploreAll = false)
         {
             // the newly parsed project will be in the container
-            return Project.CreateRecursivelyFromFile(file, container);
+            return Project.CreateRecursivelyFromFile(file, container, exploreAll);
         }
 
-        public void HandleSln(string file, UniqueProjects container)
+        /// <summary>
+        /// Go and analyze sln file.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="container"></param>
+        /// <param name="exploreAll"></param>
+        public void HandleSln(string file, UniqueProjects container, bool exploreAll = false)
         {
             string[] lines = File.ReadAllLines(file);
             string fileRoot = Path.GetDirectoryName(file);
 
-            foreach (string line in lines)
+            foreach (string line in lines.Where(x => x.StartsWith("Project(\"")))
             {
-                if (line.StartsWith("Project(\""))
+                string projectPath = line.GetProjectPath();
+                if (projectPath == null)
                 {
-                    string projectPath = line.GetProjectPath();
-                    if (projectPath == null)
-                    {
-                        Log.WriteWarning("A candidate to carry an information about project file failed to parse. The line: {0}"
-                        , line);
-                    }
-                    else
-                    {
-                        HandleCsproj(Path.Combine(fileRoot, projectPath.ToUnixPath()), container);
-                    }
+                    Log.WriteWarning("A candidate to carry an information about project file failed to parse. The line: {0}"
+                    , line);
+                }
+                else
+                {
+                    HandleCsproj(Path.Combine(fileRoot, projectPath.ToUnixPath()), container, exploreAll);
                 }
             }
         }
@@ -92,6 +103,5 @@ namespace ProjectFileAnalyzer
         {
             Log.WriteInfo("Usage: ");
         }
-
     }
 }

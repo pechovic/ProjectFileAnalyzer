@@ -4,7 +4,7 @@
 This program takes a solution file or csproj file as an input and creates two directed graphs of dependcies among all projects.
 It does nothing more than that. It just prepares this data structure and lets you apply your graph algorithm on top of it.
 
-The code is written in C# (DOT .NET Core) in Visual Studio Code Editor. 
+The code is written in C# (.NET Core) in Visual Studio Code Editor. 
 
 ## How to build it
 
@@ -39,5 +39,5 @@ Here you are provided with the _container_ variable which is a dictionary indexe
 * assembly name in case of regular reference
 
 Every item in the _container_ dictionary is a type of _Project_ class that has 2 properties:
-* References - a dictionary of projects that are being referenced by this project
-* ReferencedBy - a dictionary of projects that reference this project
+* References - a list of projects that are being referenced by this project
+* ReferencedBy - a list of projects that reference this project

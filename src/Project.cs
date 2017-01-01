@@ -26,7 +26,7 @@ namespace ProjectFileAnalyzer
             Guid = value;
         }
 
-        public static Project CreateRecursivelyFromFile(string filePath, UniqueProjects container) 
+        public static Project CreateRecursivelyFromFile(string filePath, UniqueProjects container, bool exploreAll) 
         {
             Log.WriteInfo("Starting to explore project file: {0}", filePath);
 
@@ -71,7 +71,7 @@ namespace ProjectFileAnalyzer
 
             foreach (var line in content)
             {
-                if (line.Contains("ProjectReference") && line.Trim() != "</ProjectReference>")
+                if (line.Contains("<ProjectReference") && line.Trim() != "</ProjectReference>")
                 {
                     string nextProjectRelativePath = line.TakeOut("Include=\"", "\"");
                     if (nextProjectRelativePath == null)
@@ -80,16 +80,50 @@ namespace ProjectFileAnalyzer
                             projectName,
                             line);
                     }
-                    
-                    // take a recursive call to explore found file
-                    // compose a file path first -> relative to the currently parsed file
-                    string nextProjectFullPath = Path.Combine(
-                        Path.GetDirectoryName(filePath), 
-                        nextProjectRelativePath.ToUnixPath());
-                    Project nextProject = CreateRecursivelyFromFile(nextProjectFullPath, container);
-
-                    if (nextProject != null)
+                    else
                     {
+                        // take a recursive call to explore found file
+                        // compose a file path first -> relative to the currently parsed file
+                        string nextProjectFullPath = Path.Combine(
+                            Path.GetDirectoryName(filePath), 
+                            nextProjectRelativePath.ToUnixPath());
+                        Project nextProject = CreateRecursivelyFromFile(nextProjectFullPath, container, exploreAll);
+
+                        if (nextProject != null)
+                        {
+                            p.References.Add(nextProject);
+                            nextProject.ReferencedBy.Add(p);
+                        }
+                    }
+                }
+                else if (exploreAll && line.Contains("<Reference") && line.Trim() != "</Reference>")
+                {
+                    string name = line.TakeOut("Include=\"", "\"");
+                    if (name == null)
+                    {
+                        Log.WriteWarning("{0} - parsing Reference info on the following line failed: {1} ", 
+                            projectName,
+                            line);
+                    }
+                    else
+                    {
+                        if (name.Contains(","))
+                        {
+                            name = name.Split(',')[0];
+                        }
+
+                        Project nextProject;
+                        if (container.ContainsKey(name))
+                        {
+                            nextProject = container[name];
+                        }
+                        else 
+                        {
+                            nextProject = new Project(name);
+                            nextProject.Name = name;
+                            container.Add(name, nextProject);
+                        }
+
                         p.References.Add(nextProject);
                         nextProject.ReferencedBy.Add(p);
                     }
@@ -101,7 +135,7 @@ namespace ProjectFileAnalyzer
 
         public override string ToString()
         {
-            return Guid.ToString();
+            return Name + " - " + Guid.ToString();
         }
 
     #region UniqueVertices
