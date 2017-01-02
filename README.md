@@ -16,7 +16,7 @@ Once you build the solution, you shoud have available _ProjectFileAnalyzer.dll_ 
 You can run the program by the following command:
 
 ```
-dotnet ./src/bin/Debug/netcoreapp1.0/ProjectFileAnalyzer.dll [solution-file-or-csproj-file]
+dotnet ./src/bin/Debug/netcoreapp1.0/ProjectFileAnalyzer.dll solution-file-or-csproj-file [-all]
 ```
 ## How to run tests
 
