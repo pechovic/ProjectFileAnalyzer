@@ -22,7 +22,7 @@ namespace ProjectFileAnalyzer
 
         private void Run(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length != 1 || args.Length != 2)
             {
                 throw new Exception("Wrong number of arguments.");
             }
@@ -39,15 +39,28 @@ namespace ProjectFileAnalyzer
                 throw new Exception("File {0} does not exist.");
             }
 
+            bool exploreAll = false;
+            if (args.Length == 2)
+            {
+                if (args[1] == "-all")
+                {
+                    exploreAll = true;
+                }
+                else
+                {
+                    throw new Exception("Unknown switch " + args[1]);
+                }
+            }
+
             UniqueProjects container = new UniqueProjects();
 
             if (file.EndsWith("csproj"))
             {
-                HandleCsproj(file, container);
+                HandleCsproj(file, container, exploreAll);
             }
             else if (file.EndsWith("sln"))
             {
-                HandleSln(file, container);
+                HandleSln(file, container, exploreAll);
             }
             else
             {
@@ -101,7 +114,9 @@ namespace ProjectFileAnalyzer
 
         private static void LogHelp()
         {
-            Log.WriteInfo("Usage: ");
+            Log.WriteInfo("Usage: 2 arguments: ");
+            Log.WriteInfo("  * file path, either csproj file or sln file");
+            Log.WriteInfo("  * -all switch to analyze all references (default is only project references.");
         }
     }
 }
