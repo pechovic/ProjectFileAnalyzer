@@ -6,7 +6,7 @@ namespace ProjectFileAnalyzerTest
     public class ProgramTest
     {
 
-        private const string _testSlnFile = "./test_data/NetDb.sln";
+        private const string _testSlnFile = "./ProjectFileAnalyzer.Test/test_data/NetDb.sln";
 
         private const string _guidCore = "{6D85E6C7-B860-4ED4-8C3B-C3306BAA18EC}";
         private const string _guidCommands = "{1CD34AF6-7078-45FD-B888-2990402F924A}";

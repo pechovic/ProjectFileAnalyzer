@@ -2,44 +2,24 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "0.1.0",
-    "osx": {
-        "version": "0.1.0",
-        "command": "sh",
-        "args": ["-c"],
-        "isShellCommand": true,
-        "showOutput": "always",
-        "suppressTaskName": true,
-        "tasks": [
-            {
-                "taskName": "Build",
-                "args": [
-                    "./build.sh"
-                ]
-            },
-            {
-                "taskName": "Run With Csproj",
-                "args": [
-                    "dotnet ./src/bin/Debug/netcoreapp1.0/ProjectFileAnalyzer.dll"
-                ]
-            },
-            {
-                "taskName": "Clean",
-                "args": [
-                    "./clean.sh"
-                ]
-            },
-            {
-                "taskName": "Run Tests",
-                "args":[
-                    "./run_tests.sh"
-                ]
-            }
-        ]
-    },
-    "windows": {
-        "command": "echo",
-        "isShellCommand": true,
-        "args": ["throw new NotSupportedException();"],
-        "showOutput": "always"
-    }
+    "command": "dotnet",
+    "isShellCommand": true,
+    "args": [],
+    "tasks": [
+        {
+            "taskName": "build",
+            "args": [ "./ProjectFileAnalyzer/project.json", "ProjectFileAnalyzer.Test/project.json" ],
+            "isBuildCommand": true,
+            "showOutput": "silent",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "test",
+            "args": [
+                "ProjectFileAnalyzer.Test/project.json"
+            ],
+            "isBuildCommand": true,
+            "showOutput": "always"
+        }
+    ]
 }
