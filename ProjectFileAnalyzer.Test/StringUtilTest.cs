@@ -1,7 +1,7 @@
 using Xunit;
 using ProjectFileAnalyzer;
 
-namespace ProjectFileAnalyzerTest
+namespace ProjectFileAnalyzer.Test
 {
     public class StringUtilTest
     {

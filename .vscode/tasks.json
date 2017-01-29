@@ -10,13 +10,13 @@
             "taskName": "build",
             "args": [ "./ProjectFileAnalyzer/project.json", "ProjectFileAnalyzer.Test/project.json" ],
             "isBuildCommand": true,
-            "showOutput": "silent",
+            "showOutput": "always",
             "problemMatcher": "$msCompile"
         },
         {
             "taskName": "test",
             "args": [
-                "ProjectFileAnalyzer.Test/project.json"
+                "./ProjectFileAnalyzer.Test/project.json"
             ],
             "isBuildCommand": true,
             "showOutput": "always"

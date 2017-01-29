@@ -1,5 +1,6 @@
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectFileAnalyzer
 {
@@ -13,6 +14,8 @@ namespace ProjectFileAnalyzer
         /// </summary>
         /// <returns></returns>
         public string Guid { get; set; }
+        public string CsProjPath { get; set; }
+        public bool IsExe { get; set; }
         public UniqueVertices References { get; set; } = new UniqueVertices();
         public UniqueVertices ReferencedBy {get; set; } = new UniqueVertices();
 
@@ -46,6 +49,7 @@ namespace ProjectFileAnalyzer
                 if (content[i].Contains("ProjectGuid"))
                 {
                     projectGuid = content[i].TakeOut("\\<ProjectGuid\\>", "\\</ProjectGuid\\>");
+                    break;
                 }
             }
 
@@ -62,9 +66,21 @@ namespace ProjectFileAnalyzer
                 return container[projectGuid];
             }
 
+            // find OutputType
+            bool isExe = false;
+            for (int i = 2; i < 30; i++)
+            {
+                if (content[i].Contains("OutputType"))
+                {
+                    isExe = content[i].TakeOut("\\<OutputType\\>", "\\</OutputType\\>").ToLower() == "exe";
+                }
+            }
+
             // Project is new, not explored, so create a new instance
             Project p = new Project(projectGuid);
             p.Name = projectName;
+            p.CsProjPath = filePath;
+            p.IsExe = isExe;
 
             // add it to the container now so that everyone knows it's being explored
             container.Add(projectGuid, p);
@@ -84,9 +100,9 @@ namespace ProjectFileAnalyzer
                     {
                         // take a recursive call to explore found file
                         // compose a file path first -> relative to the currently parsed file
-                        string nextProjectFullPath = Path.Combine(
+                        string nextProjectFullPath = Path.GetFullPath(Path.Combine(
                             Path.GetDirectoryName(filePath), 
-                            nextProjectRelativePath.ToUnixPath());
+                        nextProjectRelativePath.ToUnixPath()));
                         Project nextProject = CreateRecursivelyFromFile(nextProjectFullPath, container, exploreAll);
 
                         if (nextProject != null)
@@ -119,8 +135,10 @@ namespace ProjectFileAnalyzer
                         }
                         else 
                         {
+                            // parsing assembly reference data
                             nextProject = new Project(name);
                             nextProject.Name = name;
+                            nextProject.IsExe = name.EndsWith(".exe");
                             container.Add(name, nextProject);
                         }
 
@@ -131,6 +149,44 @@ namespace ProjectFileAnalyzer
             }
 
             return p;
+        }
+
+        public List<Project> GetReferenciesRecursively()
+        {
+            return GetDirectAndIndirectDependencies(false);
+        }
+
+        public List<Project> GetReferencedByRecursively()
+        {
+            return GetDirectAndIndirectDependencies(true);
+        }
+
+        private List<Project> GetDirectAndIndirectDependencies(bool referencedBy)
+        {
+            var result = new List<Project>();
+            foreach (Project project in referencedBy ? ReferencedBy : References)
+            {
+                Queue<Project> q = new Queue<Project>();
+                project.PathLength = 0;
+                q.Enqueue(project);
+
+                while (q.Any())
+                {
+                    Project current = q.Dequeue();
+                    result.Add(current);
+
+                    foreach (Project p in referencedBy ? ReferencedBy : References)
+                    {
+                        if (p.PathLength < 0)
+                        {
+                            p.PathLength = current.PathLength + 1;
+                            q.Enqueue(p);
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
 
         public override string ToString()
