@@ -10,7 +10,7 @@ The code is written in C# (.NET Core) in Visual Studio Code Editor.
 
 To build the main application and tests run the following command or use build task from VS Code Editor
 ```
-dotnet build ./ProjectFileAnalyzer/project.json ProjectFileAnalyzer.Test/project.json
+dotnet build ./ProjectFileAnalyzer/ProjectFileAnalyzer.csproj
 ```
 
 Once you build the solution, you shoud have available _ProjectFileAnalyzer.dll_ file under _./ProjectFileAnalyzer/bin/Debug/netcoreapp1.0/_ folder.
@@ -22,7 +22,7 @@ dotnet ./src/bin/Debug/netcoreapp1.1/ProjectFileAnalyzer.dll solution-file-or-cs
 
 To run tests, execute:
 ```
-dotnet test ./ProjectFileAnalyzer.Test/project.json
+dotnet test ./ProjectFileAnalyzer.Test/ProjectFileAnalyzer.Test/.csproj
 ```
 or use test task from VS Code Editor
 
