@@ -8,7 +8,7 @@
     "tasks": [
         {
             "taskName": "build",
-            "args": [ "./ProjectFileAnalyzer/project.json", "ProjectFileAnalyzer.Test/project.json" ],
+            "args": [ "./ProjectFileAnalyzer/ProjectFileAnalyzer.csproj" ],
             "isBuildCommand": true,
             "showOutput": "always",
             "problemMatcher": "$msCompile"
@@ -16,7 +16,7 @@
         {
             "taskName": "test",
             "args": [
-                "./ProjectFileAnalyzer.Test/project.json"
+                "./ProjectFileAnalyzer.Test/ProjectFileAnalyzer.Test.csproj"
             ],
             "isBuildCommand": true,
             "showOutput": "always"
